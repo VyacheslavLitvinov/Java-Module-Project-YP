@@ -1,40 +1,38 @@
-import java.util.Scanner;
-
 public class Calculator {
-    private static final Scanner scanner = new Scanner(System.in);
-    double price = 0;
     int people = 0;
-    String products = "";
-    int counterProd = 0;
 
     //Метод валидирующий кол-во людей
-    public void peopleDecision(int userPeople) {
-        while (userPeople <= 1){
-            if (userPeople < 0){
-                System.out.println("Введено некорректное значение\n" +
-                        "Введите больше одного человека");
-            } else if (userPeople == 1) {
-                System.out.println("В этом случае нет смысла ничего считать и делить\n" +
-                        "Введите больше одного человека");
-            } if (userPeople == 0) {
-                System.out.println("Кол-во гостей не может быть равно 0\n" +
-                        "Введите больше одного человека");
+    public void peopleDecision() {
+        System.out.println("На скольких человек необходимо разделить счёт?\nВведите количество людей: ");
+        int userPeople = 0;
+        do {
+            String input = Main.scanner.nextLine();
+            if (input.isEmpty()) {
+                System.out.println("Вы не ввели значение.\nВведите количество людей:");
+                continue;
             }
-            userPeople = scanner.nextInt();
-        }
+            try {
+                userPeople = Integer.parseInt(input);
+                if (userPeople <= 1) {
+                    switch (userPeople) {
+                        case 0:
+                            System.out.println("Количество гостей не может быть равно 0.\nВведите больше одного человека:");
+                            break;
+                        case 1:
+                            System.out.println("В этом случае нет смысла ничего считать и делить.\nВведите больше одного человека:");
+                            break;
+                        default:
+                            System.out.println("Введено некорректное значение.\nВведите больше одного человека:");
+                            break;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Введено некорректное значение.\nВведите больше одного человека:");
+                userPeople = -1;
+            }
+        } while (userPeople <= 1);
+
+        System.out.println("Количество людей: " + userPeople);
         people = userPeople;
     }
-
-    //Метод-счетчик товаров
-    public void productCounter(String userProduct){
-        products += userProduct + "\n";
-        counterProd += 1;
-    }
-
-    //Метод-счетчик суммы
-    public void priceCounter(double userPrice){
-        price += userPrice;
-    }
-
-
 }

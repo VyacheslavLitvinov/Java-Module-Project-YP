@@ -1,14 +1,13 @@
 import java.util.Scanner;
 
 public class Formatter {
-//equalsIgnoreCase()
-private static final Scanner scanner = new Scanner(System.in);
+
     String convertRub = "";
     String convertProd = "";
     String convertFloat = "";
 
     //Метод определяет окончание рубля по целочисленному значению
-    public void convertTextPrice(double rub){
+    public void convertTextPrice(float rub){
         int lastNum = (int) (rub % 10);
         int twoLastNum = (int) (rub % 100);
 
@@ -38,32 +37,46 @@ private static final Scanner scanner = new Scanner(System.in);
 
     }
 
-    //Метод валидирует введенное значение, если это не int
-    public static int formIntInput() {
-
-        while(!scanner.hasNextInt()) {
-            System.out.println("Введите валидное число!");
-            scanner.nextLine();
-        }
-        return scanner.nextInt();
-    }
-
-    //Метод валидирует введенное значение, если это не double
+    //Метод валидирует введенное значение по сумме товара
     public static float formDoubleInput() {
-
-        while(!scanner.hasNextFloat()) {
-            System.out.println("Введите валидное число!");
-            scanner.next();
+        double input = 0;
+        boolean valid = false;
+        while (!valid) {
+            System.out.println("Введите сумму товара:");
+            String userInput = Main.scanner.nextLine();
+            if (userInput.length() == 0) {
+                System.out.println("Значение не может быть пустым.");
+            } else {
+                try {
+                    input = Double.parseDouble(userInput.replaceAll(",", "."));
+                    valid = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Некорректный ввод.");
+                }
+            }
         }
-        return scanner.nextFloat();
+        return (float) input;
     }
 
     //Метод форматирует float значение до дух знаков после запятой
-    public void roundFloat(double f) {
-
+    public void roundFloat(float f) {
         convertFloat = String.format("%.2f", f);
     }
 
+    //Метод валидирует пустые значения или занчения из пробелов
+    public static String form(String input) {
+        input = input.trim();
 
+        if (!input.isEmpty()){
+            return input;
+        } else {
+            while (input.isEmpty()) {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Значение не может быть пустым!");
+                input = scanner.nextLine().trim();
+            }
+        }
+        return input;
+    }
 
 }

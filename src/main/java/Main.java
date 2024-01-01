@@ -1,25 +1,27 @@
 import java.util.Scanner;
 
 public class Main {
-    private static final Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         String answer = "Да";
         Calculator calc = new Calculator();
         Formatter form  = new Formatter();
+        Product prod = new Product();
 
-
-        System.out.println("На скольких человек необходимо разделить счёт?");
-        int people = Formatter.formIntInput();
-        calc.peopleDecision(people);
+        calc.peopleDecision();
 
         while (!answer.equalsIgnoreCase("Завершить")){
             System.out.println("Введите название товара");
-            String productName = scanner.nextLine();
-            calc.productCounter(productName);
+            String inp = scanner.nextLine();
+            String productName = Formatter.form(inp);
+            prod.productCounter(productName);
 
-            System.out.println("Введите сумму");
             float userPrice = Formatter.formDoubleInput();
-            calc.priceCounter(userPrice);
+            while (userPrice < 0 || userPrice == 0){
+                System.out.println("Треубется ввести сумму больше нуля.");
+                userPrice = Formatter.formDoubleInput();
+            }
+            prod.priceCounter(userPrice);
 
             System.out.println("Товар " + productName + " успешно добавлен.\n" +
                     "Добавить еще один товар?");
@@ -27,15 +29,15 @@ public class Main {
         }
 
         if (answer.equalsIgnoreCase("Завершить")){
-            form.convertTextPrice(calc.price);
-            form.convertTextProd(calc.counterProd);
-            form.roundFloat((float) calc.price);
-            System.out.println("Всего добавлено " + calc.counterProd + form.convertProd + ": \n" +
-                    calc.products +
-                    "На сумму " + form.convertFloat + form.convertRub);
-            form.convertTextPrice(calc.price/ calc.people);
-            form.roundFloat((float) (calc.price/calc.people));
-            System.out.println("Выходит " + form.convertFloat + form.convertRub + " с каждого человека ");
+            form.convertTextPrice(prod.price);
+            form.convertTextProd(prod.counterProd);
+            form.roundFloat(prod.price);
+            System.out.println("Всего добавлено " + prod.counterProd + form.convertProd + ": \n" +
+                    prod.name +
+                    "На сумму " + form.convertFloat + form.convertRub + ".");
+            form.convertTextPrice(prod.price/ calc.people);
+            form.roundFloat(prod.price/calc.people);
+            System.out.println("Выходит " + form.convertFloat + form.convertRub + " с каждого человека.");
         }
 
 
